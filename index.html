@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Log In</title>
 
     <!-- google font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,18 +40,18 @@
                 <div class=" w-full">
                     <div class="flex flex-col mb-4 space-y-2">
                         <label class="label font-medium text-black">Username</label>
-                        <input type="text" class="input w-full" placeholder="Enter Username" />
+                        <input id="username" type="text" class="input w-full" placeholder="Enter Username" />
                         <p class="text-[#4A00FF]">Default: admin</p>
                     </div>
 
                     <div class="flex flex-col space-y-2">
                         <label class="label font-medium text-black">Password</label>
-                        <input type="password" class="input w-full" placeholder="Enter Password" />
-                        <p class="text-[#4A00FF]">Default: admin</p>
+                        <input id="password" type="password" class="input w-full" placeholder="Enter Password" />
+                        <p class="text-[#4A00FF]">Default: admin123</p>
                     </div>
                 </div>
 
-                <button class="w-full btn mt-6 bg-[#4A00FF] text-white">Sign In</button>
+                <button id="login-btn" class="w-full btn mt-6 bg-[#4A00FF] text-white">Sign In</button>
             </fieldset>
 
             <div class="flex items-center w-full">

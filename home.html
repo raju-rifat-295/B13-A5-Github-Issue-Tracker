@@ -6,20 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
 
-    <!-- google font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
 
-    <!-- css -->
     <link rel="stylesheet" href="style.css">
 
-    <!-- font awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
         integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- daisyUI and tailwind -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
@@ -27,250 +23,89 @@
 <body>
 
     <header
-        class="flex items-center justify-between px-15 py-[17px] bg-white border-b-2 border-b-[#E4E4E4] sticky z-10 top-0">
-        <div class="flex gap-2 items-center ">
+        class="flex flex-col md:flex-row items-center justify-between px-4 md:px-15 py-4 gap-4 bg-white border-b-2 border-b-[#E4E4E4] sticky z-10 top-0">
+        <div class="flex gap-2 items-center w-full md:w-auto justify-center md:justify-start">
             <img class="size-[37px]" src="./assets/github-logo.png" alt="">
-            <h2 class="font-semibold text-2xl">GitHub Issues Tracker</h2>
+            <h2 class="font-semibold text-xl md:text-2xl">GitHub Issues Tracker</h2>
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex flex-col sm:flex-row items-center gap-2 md:gap-4 w-full md:w-auto">
             <div
-                class="border-[1.5px] w-[300px] h-11 px-4 py-3.5 rounded-md  border-gray-300 text-[#64748B] gap-1 flex items-center">
+                class="border-[1.5px] w-full sm:w-[300px] h-11 px-4 py-3.5 rounded-md border-gray-300 text-[#64748B] gap-2 flex items-center">
                 <i class="fa-brands fa-sistrix"></i>
-                <input id="input" class="border-none focus:outline-none" type="text" name="" id=""
+                <input id="input" class="border-none w-full focus:outline-none" type="text"
                     placeholder="Search issues...">
             </div>
             <button id="search-btn"
-                class="w-[131px] h-11 bg-[#4A00FF] font-semibold text-white rounded-md">Search</button>
+                class="w-full sm:w-[131px] h-11 bg-[#4A00FF] font-semibold text-white rounded-md shrink-0">Search</button>
         </div>
-
     </header>
 
-    <main id="main" class="min-h-screen bg-[#f8fafc] flex justify-center">
-        <div class="main-container">
+    <main id="main" class="min-h-screen bg-[#f8fafc] flex justify-center px-4 md:px-6">
+        <div class="main-container w-full max-w-[1110px] pb-10">
 
-            <!-- navbar section -->
-            <nav class="w-[1110px] h-[88px] mt-[60px] bg-white rounded-md p-6 shadow-[0_1px_6px_0_rgba(0,0,0,0.08)]">
-                <div class="nav-btn-container">
+            <nav
+                class="w-full h-auto min-h-[88px] mt-[30px] md:mt-[60px] bg-white rounded-md p-4 md:p-6 shadow-[0_1px_6px_0_rgba(0,0,0,0.08)] flex items-center">
+                <div class="nav-btn-container flex flex-wrap gap-2 md:gap-4 w-full">
                     <button onclick="toggleStyle('all-btn')" id="all-btn"
-                        class=" w-[131px] h-11 border-2 border-[#E4E4E7]  bg-[#4A00FF] text-white font-semibold  rounded-md">All</button>
+                        class="flex-1 sm:flex-none w-auto min-w-[100px] sm:w-[131px] h-11 border-2 border-[#E4E4E7] bg-[#4A00FF] text-white font-semibold rounded-md">All</button>
 
                     <button onclick="toggleStyle('open-btn')" id="open-btn"
-                        class=" w-[131px] h-11 border-2 border-[#E4E4E7]  text-[#64748B] font-semibold rounded-md">Open</button>
+                        class="flex-1 sm:flex-none w-auto min-w-[100px] sm:w-[131px] h-11 border-2 border-[#E4E4E7] text-[#64748B] font-semibold rounded-md">Open</button>
 
                     <button onclick="toggleStyle('closed-btn')" id="closed-btn"
-                        class=" w-[131px] h-11 border-2 border-[#E4E4E7]  text-[#64748B] font-semibold rounded-md">Closed</button>
+                        class="flex-1 sm:flex-none w-auto min-w-[100px] sm:w-[131px] h-11 border-2 border-[#E4E4E7] text-[#64748B] font-semibold rounded-md">Closed</button>
                 </div>
             </nav>
 
-            <!-- issue section -->
-            <div class="w-[1110px] mt-[60px] overflow-hidden rounded-md shadow-[0_1px_6px_0_rgba(0,0,0,0.08)]">
+            <div class="w-full mt-[30px] md:mt-[60px] overflow-hidden rounded-md shadow-[0_1px_6px_0_rgba(0,0,0,0.08)]">
 
-                <!-- issue count -->
-                <section class="issue-count-container bg-[#FFFFFF] p-6 flex justify-between items-center">
+                <section
+                    class="issue-count-container bg-[#FFFFFF] p-4 md:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div class="flex items-center gap-2">
                         <img class="size-12" src="./assets/Aperture.png" alt="">
                         <div>
                             <h2 class="font-semibold text-[20px]"><span id="count">50</span> Issues</h2>
-                            <p class="text-[#64748B] font-normal">Track and manage your project issues</p>
+                            <p class="text-[#64748B] font-normal text-sm md:text-base">Track and manage your project
+                                issues</p>
                         </div>
                     </div>
 
                     <div class="flex gap-4 items-center">
                         <div class="flex gap-1 items-center">
                             <img class="size-6" src="./assets/Open-Status.png" alt="">
-                            <p>Open</p>
+                            <p class="text-sm md:text-base">Open</p>
                         </div>
                         <div class="flex gap-1 items-center">
                             <img class="size-6" src="./assets/Closed- Status .png" alt="">
-                            <p>Closed</p>
+                            <p class="text-sm md:text-base">Closed</p>
                         </div>
                     </div>
                 </section>
 
                 <hr class="border-gray-300">
 
-                <!-- all issue cards -->
-                <div id="cards-container" class="bg-[#FBFBFB] p-6 grid grid-cols-4 gap-3">
-
-                    <div
-                        class="grid grid-rows-4 card w-64 p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 border-[#00A96E] text-left">
-                        <div class="row-span-3">
-                            <div class="flex justify-between">
-                                <img class="size-6" src="./assets/Open-Status.png" alt="">
-                                <div
-                                    class="h-6 w-20 px-[25px] py-1.5 text-[12px] font-medium rounded-[100px] text-[#EF4444] bg-[#FEECEC] flex items-center">
-                                    <p>HIGH</p>
-                                </div>
-                            </div>
-                            <h2 class="card-title mt-3 text-[14px] font-semibold">Fix navigation menu on mobile devices
-                            </h2>
-                            <p class="text-[12px] font-normal text-[#64748B] mt-2">The navigation menu doesn't collapse
-                                properly on mobile devices...</p>
-                            <div class="badge-container flex flex-col gap-1 mt-3">
-                                <div
-                                    class="h-6 px-2 py-1.5 bg-[#FEECEC] flex items-center border border-[#FECACA] rounded-[100px] text-[12px] text-[#EF4444] font-medium">
-                                    <i class="fa-solid fa-bug"></i>
-                                    <p>BUG</p>
-                                </div>
-                                <div
-                                    class="h-6 px-2 py-1.5 bg-[#FFF8DB] flex items-center border border-[#FDE68A] rounded-[100px] text-[12px] text-[#D97706] font-medium">
-                                    <i class="fa-solid fa-life-ring"></i>
-                                    <p>HELP WANTED</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row-span-1">
-                            <hr class="border-gray-300 mt-1.5">
-                            <p class="author mt-4 font-normal text-[#64748B] text-[12px]">ID by NAME</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">ASSIGNED NAME</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">CREATION DATE</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">UPDATED DATE</p>
-                        </div>
-                    </div>
-
-                    <div
-                        class="grid grid-rows-4 card w-64 p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 border-[#A855F7] text-left">
-                        <div class="row-span-3">
-                            <div class="flex justify-between">
-                                <img class="size-6" src="./assets/Closed- Status .png" alt="">
-                                <div
-                                    class="h-6 w-20 px-[25px] py-1.5 text-[12px] font-medium rounded-[100px] text-[#9CA3AF] bg-[#EEEFF2] flex items-center">
-                                    <p>LOW</p>
-                                </div>
-                            </div>
-                            <h2 class="card-title mt-3 text-[14px] font-semibold">Fix navigation menu on mobile devices
-                            </h2>
-                            <p class="text-[12px] font-normal text-[#64748B] mt-2">The navigation menu doesn't collapse
-                                properly on mobile devices...</p>
-                            <div class="badge-container flex flex-col gap-1 mt-3">
-                                <div
-                                    class="h-6 px-2 py-1.5 bg-[#DEFCE8] flex items-center border border-[#BBF7D0] rounded-[100px] text-[12px] text-[#00A96E] font-medium">
-                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                                    <p>ENHANCEMENT</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row-span-1">
-                            <hr class="border-gray-300 mt-1.5">
-                            <p class="author mt-4 font-normal text-[#64748B] text-[12px]">#1 by john_doe</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">1/15/2024</p>
-                        </div>
-                    </div>
-
-                    <div
-                        class="grid grid-rows-4 card w-64 p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 border-[#A855F7] text-left">
-                        <div class="row-span-3">
-                            <div class="flex justify-between">
-                                <img class="size-6" src="./assets/Closed- Status .png" alt="">
-                                <div
-                                    class="h-6 w-20 px-[25px] py-1.5 text-[12px] font-medium rounded-[100px] text-[#F59E0B] bg-[#FFF6D1] flex items-center justify-center">
-                                    <p>MEDIUM</p>
-                                </div>
-                            </div>
-                            <h2 class="card-title mt-3 text-[14px] font-semibold">Fix navigation menu on mobile devices
-                            </h2>
-                            <p class="text-[12px] font-normal text-[#64748B] mt-2">The navigation menu doesn't collapse
-                                properly on mobile devices...</p>
-                            <div class="badge-container flex flex-col gap-1 mt-3">
-                                <div
-                                    class="h-6 px-2 py-1.5 bg-[#E0F2FE] flex items-center border border-[#BAE6FD] rounded-[100px] text-[12px] text-[#0284C7] font-medium">
-                                    <i class="fa-solid fa-seedling"></i>
-                                    <p>GOOD FIRST ISSUE</p>
-                                </div>
-                                <div
-                                    class="h-6 px-2 py-1.5 bg-[#F3E8FF] flex items-center border border-[#E9D5FF] rounded-[100px] text-[12px] text-[#7C3AED] font-medium">
-                                    <i class="fa-solid fa-book"></i>
-                                    <p>DOCUMENTATION</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row-span-1">
-                            <hr class="border-gray-300 mt-1.5">
-                            <p class="author mt-4 font-normal text-[#64748B] text-[12px]">#1 by john_doe</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">1/15/2024</p>
-                        </div>
-                    </div>
+                <div id="cards-container"
+                    class="bg-[#FBFBFB] p-4 md:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
                 </div>
 
-                <!-- filtered opened cards -->
-                <div id="open-container" class="bg-[#FBFBFB] p-6 grid grid-cols-4 gap-3 hidden">
-
+                <div id="open-container"
+                    class="bg-[#FBFBFB] p-4 md:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 hidden">
                 </div>
 
-                <!-- filtered closed cards -->
-                <div id="closed-container" class="bg-[#FBFBFB] p-6 grid grid-cols-4 gap-3 hidden">
-
+                <div id="closed-container"
+                    class="bg-[#FBFBFB] p-4 md:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 hidden">
                 </div>
 
-                <!-- search cards -->
-                <div id="search-container" class="bg-[#FBFBFB] p-6 grid grid-cols-4 gap-3 hidden">
-
+                <div id="search-container"
+                    class="bg-[#FBFBFB] p-4 md:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 hidden">
                 </div>
             </div>
 
         </div>
     </main>
 
-    <!-- modal section -->
     <section id="modal-container">
         <dialog id="my_modal_1" class="modal">
-            <!-- <div class="modal-box space-y-4">
-                <h3 class="text-lg font-bold">Fix broken image uploads</h3>
-
-                <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-gray-500">
-                    <span
-                        class="px-2 py-1.5 bg-[#00A96E] text-white h-6 w-16 text-center flex items-center justify-center text-[12px] font-medium rounded-full">
-                        Opened
-                    </span>
-                    <span>•</span>
-                    <span>Opened by Fahim Ahmed</span>
-                    <span>•</span>
-                    <span>Assignee by shuvo</span>
-                    <span>•</span>
-                    <span>starting date</span>
-                    <span>•</span>
-                    <span>ending date</span>
-                </div>
-
-                <div class="badge-container flex flex-col gap-1 mt-3">
-                    <div
-                        class="h-6 px-2 py-1.5 bg-[#FEECEC] flex items-center border border-[#FECACA] rounded-[100px] text-[12px] text-[#EF4444] font-medium">
-                        <i class="fa-solid fa-bug"></i>
-                        <p>BUG</p>
-                    </div>
-                    <div
-                        class="h-6 px-2 py-1.5 bg-[#FFF8DB] flex items-center border border-[#FDE68A] rounded-[100px] text-[12px] text-[#D97706] font-medium">
-                        <i class="fa-solid fa-life-ring"></i>
-                        <p>HELP WANTED</p>
-                    </div>
-                </div>
-                <p class="text-[12px] font-normal text-[#64748B]">The navigation menu doesn't collapse properly on
-                    mobile devices...</p>
-
-                <div
-                    class="bg-slate-50 rounded-xl p-5 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div class="flex flex-col gap-1">
-                        <span class="text-sm text-slate-500">Assignee:</span>
-                        <span class="font-bold text-gray-900">Fahim Ahmed</span>
-                    </div>
-
-                    <div class="flex flex-col gap-1 sm:w-1/2">
-                        <span class="text-sm text-slate-500">Priority:</span>
-                        <div>
-                            <div
-                                class="h-6 w-20 px-[25px] py-1.5 text-[12px] font-medium rounded-[100px] text-[#EF4444] bg-[#FEECEC] flex items-center">
-                                <p>HIGH</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-action">
-                    <form method="dialog">
-                        <button class="btn">Close</button>
-                    </form>
-                </div>
-            </div> -->
         </dialog>
     </section>
 

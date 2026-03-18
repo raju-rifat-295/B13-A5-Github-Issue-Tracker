@@ -12,21 +12,19 @@ const searchBtn = document.getElementById('search-btn');
 const input = document.getElementById('input');
 const myModal = document.getElementById('my_modal_1');
 
-function modalStatus(element){
-    if(element.status == 'open'){
+function modalStatus(element) {
+    if (element.status == 'open') {
         return `
-        <span
-                        class="px-2 py-1.5 bg-[#00A96E] text-white h-6 w-16 text-center flex items-center justify-center text-[12px] font-medium rounded-full">
-                        Opened
-                    </span>
+        <span class="px-2 py-1.5 bg-[#00A96E] text-white h-6 w-16 text-center flex items-center justify-center text-[12px] font-medium rounded-full">
+            Opened
+        </span>
         `
     }
-    else{
+    else {
         return `
-        <span
-                        class="px-2 py-1.5 bg-[#EF4444] text-white h-6 w-16 text-center flex items-center justify-center text-[12px] font-medium rounded-full">
-                        Closed
-                    </span>
+        <span class="px-2 py-1.5 bg-[#EF4444] text-white h-6 w-16 text-center flex items-center justify-center text-[12px] font-medium rounded-full">
+            Closed
+        </span>
         `
     }
 }
@@ -34,22 +32,22 @@ function modalStatus(element){
 function handleCardClick(container) {
     container.addEventListener('click', (event) => {
         const card = event.target.closest('.card');
-        
-        if (!card) return; 
+
+        if (!card) return;
 
         const id = card.dataset.id;
-        
+
         fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-            const element = data; 
+            .then((res) => res.json())
+            .then((data) => {
+                const element = data.data;
 
-            const myModal = document.getElementById('my_modal_1');
-            myModal.innerHTML = ''; 
+                const myModal = document.getElementById('my_modal_1');
+                myModal.innerHTML = '';
 
-            const div = document.createElement('div');
-            div.className = 'modal-box space-y-4';
-            div.innerHTML = `
+                const div = document.createElement('div');
+                div.className = 'modal-box space-y-4 w-11/12 max-w-2xl mx-auto';
+                div.innerHTML = `
             <h3 class="text-lg font-bold">${element.title}</h3>
 
                 <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-gray-500">
@@ -64,7 +62,7 @@ function handleCardClick(container) {
                     <span>Updated- ${element.updatedAt}</span>
                 </div>
 
-                <div class="badge-container flex flex-col gap-1 mt-3">
+                <div class="badge-container flex flex-wrap gap-2 mt-3">
                     ${labels(element)}
                 </div>
                 <p class="text-[12px] font-normal text-[#64748B]">${element.description}</p>
@@ -88,10 +86,10 @@ function handleCardClick(container) {
                     </form>
                 </div>
             `;
-            
-            myModal.appendChild(div);
-            myModal.showModal(); 
-        });
+
+                myModal.appendChild(div);
+                myModal.showModal();
+            });
     });
 }
 
@@ -206,22 +204,13 @@ function statusIcon(element) {
 
 function priority(element) {
     if (element.priority == 'high') {
-        return `<div
-                                    class="h-6 w-20 px-[25px] py-1.5 text-[12px] font-medium rounded-[100px] text-[#EF4444] bg-[#FEECEC] flex items-center">
-                                    <p>HIGH</p>
-                                </div>`;
+        return `<div class="h-6 w-20 px-[25px] py-1.5 text-[12px] font-medium rounded-[100px] text-[#EF4444] bg-[#FEECEC] flex items-center justify-center"><p>HIGH</p></div>`;
     }
     else if (element.priority == 'medium') {
-        return `<div
-                                    class="h-6 w-20 px-[25px] py-1.5 text-[12px] font-medium rounded-[100px] text-[#F59E0B] bg-[#FFF6D1] flex items-center justify-center">
-                                    <p>MEDIUM</p>
-                                </div>`;
+        return `<div class="h-6 w-20 px-[25px] py-1.5 text-[12px] font-medium rounded-[100px] text-[#F59E0B] bg-[#FFF6D1] flex items-center justify-center"><p>MEDIUM</p></div>`;
     }
     else {
-        return `<div
-                                    class="h-6 w-20 px-[25px] py-1.5 text-[12px] font-medium rounded-[100px] text-[#9CA3AF] bg-[#EEEFF2] flex items-center">
-                                    <p>LOW</p>
-                                </div>`;
+        return `<div class="h-6 w-20 px-[25px] py-1.5 text-[12px] font-medium rounded-[100px] text-[#9CA3AF] bg-[#EEEFF2] flex items-center justify-center"><p>LOW</p></div>`;
     }
 }
 
@@ -235,48 +224,43 @@ function labels(element) {
 
             if (badge == 'bug') {
                 badgeHTML = `
-                <div
-                                    class="h-6 px-2 py-1.5 bg-[#FEECEC] flex items-center border border-[#FECACA] rounded-[100px] text-[12px] text-[#EF4444] font-medium">
-                                    <i class="fa-solid fa-bug"></i>
-                                    <p>BUG</p>
-                                </div>
+                <div class="h-6 px-2 py-1.5 bg-[#FEECEC] flex items-center border border-[#FECACA] rounded-[100px] text-[12px] text-[#EF4444] font-medium whitespace-nowrap w-max">
+                    <i class="fa-solid fa-bug mr-1"></i>
+                    <p>BUG</p>
+                </div>
                 `
             }
             else if (badge == 'help wanted') {
                 badgeHTML = `
-                <div
-                                    class="h-6 px-2 py-1.5 bg-[#FFF8DB] flex items-center border border-[#FDE68A] rounded-[100px] text-[12px] text-[#D97706] font-medium">
-                                    <i class="fa-solid fa-life-ring"></i>
-                                    <p>HELP WANTED</p>
-                                </div>
+                <div class="h-6 px-2 py-1.5 bg-[#FFF8DB] flex items-center border border-[#FDE68A] rounded-[100px] text-[12px] text-[#D97706] font-medium whitespace-nowrap w-max">
+                    <i class="fa-solid fa-life-ring mr-1"></i>
+                    <p>HELP WANTED</p>
+                </div>
                 `
 
             }
             else if (badge == 'enhancement') {
                 badgeHTML = `
-                <div
-                                    class="h-6 px-2 py-1.5 bg-[#DEFCE8] flex items-center border border-[#BBF7D0] rounded-[100px] text-[12px] text-[#00A96E] font-medium">
-                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                                    <p>ENHANCEMENT</p>
-                                </div>
+                <div class="h-6 px-2 py-1.5 bg-[#DEFCE8] flex items-center border border-[#BBF7D0] rounded-[100px] text-[12px] text-[#00A96E] font-medium whitespace-nowrap w-max">
+                    <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>
+                    <p>ENHANCEMENT</p>
+                </div>
                 `
             }
             else if (badge == 'good first issue') {
                 badgeHTML = `
-                <div
-                                    class="h-6 px-2 py-1.5 bg-[#E0F2FE] flex items-center border border-[#BAE6FD] rounded-[100px] text-[12px] text-[#0284C7] font-medium">
-                                    <i class="fa-solid fa-seedling"></i>
-                                    <p>GOOD FIRST ISSUE</p>
-                                </div>
+                <div class="h-6 px-2 py-1.5 bg-[#E0F2FE] flex items-center border border-[#BAE6FD] rounded-[100px] text-[12px] text-[#0284C7] font-medium whitespace-nowrap w-max">
+                    <i class="fa-solid fa-seedling mr-1"></i>
+                    <p>GOOD FIRST ISSUE</p>
+                </div>
                 `
             }
             else {
                 badgeHTML = `
-                <div
-                                    class="h-6 px-2 py-1.5 bg-[#F3E8FF] flex items-center border border-[#E9D5FF] rounded-[100px] text-[12px] text-[#7C3AED] font-medium">
-                                    <i class="fa-solid fa-book"></i>
-                                    <p>DOCUMENTATION</p>
-                                </div>
+                <div class="h-6 px-2 py-1.5 bg-[#F3E8FF] flex items-center border border-[#E9D5FF] rounded-[100px] text-[12px] text-[#7C3AED] font-medium whitespace-nowrap w-max">
+                    <i class="fa-solid fa-book mr-1"></i>
+                    <p>DOCUMENTATION</p>
+                </div>
                 `
             }
             badgeS = badgeS + badgeHTML;
@@ -297,29 +281,28 @@ const displayAllIssue = (arr) => {
         (element) => {
             const card = document.createElement('div');
             card.dataset.id = element.id;
-            card.className = `grid grid-rows-3 card w-64 p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left `
+            card.className = `flex flex-col justify-between card w-full h-full p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left `
 
             card.innerHTML = `
-            <div class="row-span-2">
-                            <div class="flex justify-between">
-                                <img class="size-6" src="./assets/${statusIcon(element)}" alt="">
-                                ${priority(element)}
-                            </div>
-                            <h2 class="card-title mt-3 text-[14px] font-semibold">${element.title}
-                            </h2>
-                            <p class="text-[12px] font-normal text-[#64748B] mt-2">${element.description}</p>
-                            <div  class="badge-container flex flex-col gap-1 mt-3">
-                                ${labels(element)
-                }
-                            </div>
-                        </div>
-                        <div class="row-span-1">
-                            <hr class="border-gray-300 mt-1.5">
-                            <p class="author mt-4 font-normal text-[#64748B] text-[12px]">${element.id} by ${element.author}</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Assignee: ${element.assignee}</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Created At: ${element.createdAt}</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Updated At: ${element.updatedAt}</p>
-                        </div>
+            <div class="flex-1">
+                <div class="flex justify-between items-start gap-2">
+                    <img class="size-6 shrink-0" src="./assets/${statusIcon(element)}" alt="">
+                    ${priority(element)}
+                </div>
+                <h2 class="card-title mt-3 text-[14px] font-semibold">${element.title}
+                </h2>
+                <p class="text-[12px] font-normal text-[#64748B] mt-2 line-clamp-3">${element.description}</p>
+                <div class="badge-container flex flex-wrap gap-2 mt-3">
+                    ${labels(element)}
+                </div>
+            </div>
+            <div class="mt-4">
+                <hr class="border-gray-300 mt-1.5">
+                <p class="author mt-4 font-normal text-[#64748B] text-[12px]">${element.id} by ${element.author}</p>
+                <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Assignee: ${element.assignee}</p>
+                <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Created At: ${element.createdAt}</p>
+                <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Updated At: ${element.updatedAt}</p>
+            </div>
             `;
 
             cardsContainer.appendChild(card);
@@ -343,31 +326,30 @@ const displayOpen = (arr) => {
         (element) => {
             const card = document.createElement('div');
             card.dataset.id = element.id;
-            card.className = `grid grid-rows-3 card w-64 p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left`
+            card.className = `flex flex-col justify-between card w-full h-full p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left`
             if (element.status == 'closed') {
                 card.classList.add('hidden');
             }
             card.innerHTML = `
-            <div class="row-span-2">
-                            <div class="flex justify-between">
-                                <img class="size-6" src="./assets/${statusIcon(element)}" alt="">
-                                ${priority(element)}
-                            </div>
-                            <h2 class="card-title mt-3 text-[14px] font-semibold">${element.title}
-                            </h2>
-                            <p class="text-[12px] font-normal text-[#64748B] mt-2">${element.description}</p>
-                            <div  class="badge-container flex flex-col gap-1 mt-3">
-                                ${labels(element)
-                }
-                            </div>
-                        </div>
-                        <div class="row-span-1">
-                            <hr class="border-gray-300 mt-1.5">
-                            <p class="author mt-4 font-normal text-[#64748B] text-[12px]">${element.id} by ${element.author}</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Assignee: ${element.assignee}</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Created At: ${element.createdAt}</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Updated At: ${element.updatedAt}</p>
-                        </div>
+            <div class="flex-1">
+                <div class="flex justify-between items-start gap-2">
+                    <img class="size-6 shrink-0" src="./assets/${statusIcon(element)}" alt="">
+                    ${priority(element)}
+                </div>
+                <h2 class="card-title mt-3 text-[14px] font-semibold">${element.title}
+                </h2>
+                <p class="text-[12px] font-normal text-[#64748B] mt-2 line-clamp-3">${element.description}</p>
+                <div class="badge-container flex flex-wrap gap-2 mt-3">
+                    ${labels(element)}
+                </div>
+            </div>
+            <div class="mt-4">
+                <hr class="border-gray-300 mt-1.5">
+                <p class="author mt-4 font-normal text-[#64748B] text-[12px]">${element.id} by ${element.author}</p>
+                <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Assignee: ${element.assignee}</p>
+                <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Created At: ${element.createdAt}</p>
+                <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Updated At: ${element.updatedAt}</p>
+            </div>
             `;
 
             openContainer.appendChild(card);
@@ -391,31 +373,30 @@ const displayClosed = (arr) => {
         (element) => {
             const card = document.createElement('div');
             card.dataset.id = element.id;
-            card.className = `grid grid-rows-3 card w-64 p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left `
+            card.className = `flex flex-col justify-between card w-full h-full p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left `
             if (element.status == 'open') {
                 card.classList.add('hidden');
             }
             card.innerHTML = `
-            <div class="row-span-2">
-                            <div class="flex justify-between">
-                                <img class="size-6" src="./assets/${statusIcon(element)}" alt="">
-                                ${priority(element)}
-                            </div>
-                            <h2 class="card-title mt-3 text-[14px] font-semibold">${element.title}
-                            </h2>
-                            <p class="text-[12px] font-normal text-[#64748B] mt-2">${element.description}</p>
-                            <div  class="badge-container flex flex-col gap-1 mt-3">
-                                ${labels(element)
-                }
-                            </div>
-                        </div>
-                        <div class="row-span-1">
-                            <hr class="border-gray-300 mt-1.5">
-                            <p class="author mt-4 font-normal text-[#64748B] text-[12px]">${element.id} by ${element.author}</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Assignee: ${element.assignee}</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Created At: ${element.createdAt}</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Updated At: ${element.updatedAt}</p>
-                        </div>
+            <div class="flex-1">
+                <div class="flex justify-between items-start gap-2">
+                    <img class="size-6 shrink-0" src="./assets/${statusIcon(element)}" alt="">
+                    ${priority(element)}
+                </div>
+                <h2 class="card-title mt-3 text-[14px] font-semibold">${element.title}
+                </h2>
+                <p class="text-[12px] font-normal text-[#64748B] mt-2 line-clamp-3">${element.description}</p>
+                <div class="badge-container flex flex-wrap gap-2 mt-3">
+                    ${labels(element)}
+                </div>
+            </div>
+            <div class="mt-4">
+                <hr class="border-gray-300 mt-1.5">
+                <p class="author mt-4 font-normal text-[#64748B] text-[12px]">${element.id} by ${element.author}</p>
+                <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Assignee: ${element.assignee}</p>
+                <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Created At: ${element.createdAt}</p>
+                <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Updated At: ${element.updatedAt}</p>
+            </div>
             `;
 
             closedContainer.appendChild(card);
@@ -431,29 +412,28 @@ const displaySearch = (arr) => {
         (element) => {
             const card = document.createElement('div');
             card.dataset.id = element.id;
-            card.className = `grid grid-rows-3 card w-64 p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left `
+            card.className = `flex flex-col justify-between card w-full h-full p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left `
 
             card.innerHTML = `
-            <div class="row-span-2">
-                            <div class="flex justify-between">
-                                <img class="size-6" src="./assets/${statusIcon(element)}" alt="">
-                                ${priority(element)}
-                            </div>
-                            <h2 class="card-title mt-3 text-[14px] font-semibold">${element.title}
-                            </h2>
-                            <p class="text-[12px] font-normal text-[#64748B] mt-2">${element.description}</p>
-                            <div  class="badge-container flex flex-col gap-1 mt-3">
-                                ${labels(element)
-                }
-                            </div>
-                        </div>
-                        <div class="row-span-1">
-                            <hr class="border-gray-300 mt-1.5">
-                            <p class="author mt-4 font-normal text-[#64748B] text-[12px]">${element.id} by ${element.author}</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Assignee: ${element.assignee}</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Created At: ${element.createdAt}</p>
-                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Updated At: ${element.updatedAt}</p>
-                        </div>
+            <div class="flex-1">
+                <div class="flex justify-between items-start gap-2">
+                    <img class="size-6 shrink-0" src="./assets/${statusIcon(element)}" alt="">
+                    ${priority(element)}
+                </div>
+                <h2 class="card-title mt-3 text-[14px] font-semibold">${element.title}
+                </h2>
+                <p class="text-[12px] font-normal text-[#64748B] mt-2 line-clamp-3">${element.description}</p>
+                <div class="badge-container flex flex-wrap gap-2 mt-3">
+                    ${labels(element)}
+                </div>
+            </div>
+            <div class="mt-4">
+                <hr class="border-gray-300 mt-1.5">
+                <p class="author mt-4 font-normal text-[#64748B] text-[12px]">${element.id} by ${element.author}</p>
+                <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Assignee: ${element.assignee}</p>
+                <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Created At: ${element.createdAt}</p>
+                <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Updated At: ${element.updatedAt}</p>
+            </div>
             `;
 
             searchContainer.appendChild(card);
@@ -461,12 +441,4 @@ const displaySearch = (arr) => {
     )
 }
 
-
-
-
-
-
 loadAllIssue();
-
-
-

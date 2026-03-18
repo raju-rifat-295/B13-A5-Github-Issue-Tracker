@@ -12,62 +12,73 @@ const searchBtn = document.getElementById('search-btn');
 const input = document.getElementById('input');
 const myModal = document.getElementById('my_modal_1');
 
+function modalStatus(element){
+    if(element.status == 'open'){
+        return `
+        <span
+                        class="px-2 py-1.5 bg-[#00A96E] text-white h-6 w-16 text-center flex items-center justify-center text-[12px] font-medium rounded-full">
+                        Opened
+                    </span>
+        `
+    }
+    else{
+        return `
+        <span
+                        class="px-2 py-1.5 bg-[#EF4444] text-white h-6 w-16 text-center flex items-center justify-center text-[12px] font-medium rounded-full">
+                        Closed
+                    </span>
+        `
+    }
+}
 
 function handleCardClick(container) {
     container.addEventListener('click', (event) => {
         const card = event.target.closest('.card');
+        
+        if (!card) return; 
 
-        if (card) {
-            document.getElementById('my_modal_1').showModal();
+        const id = card.dataset.id;
+        
+        fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+            const element = data; 
+
+            const myModal = document.getElementById('my_modal_1');
+            myModal.innerHTML = ''; 
+
             const div = document.createElement('div');
             div.className = 'modal-box space-y-4';
             div.innerHTML = `
-            <h3 class="text-lg font-bold">Fix broken image uploads</h3>
+            <h3 class="text-lg font-bold">${element.title}</h3>
 
                 <div class="flex flex-wrap items-center gap-2 mb-5 text-sm text-gray-500">
-                    <span
-                        class="px-2 py-1.5 bg-[#00A96E] text-white h-6 w-16 text-center flex items-center justify-center text-[12px] font-medium rounded-full">
-                        Opened
-                    </span>
+                    ${modalStatus(element)}
                     <span>•</span>
-                    <span>Opened by Fahim Ahmed</span>
+                    <span>Author- ${element.author}</span>
                     <span>•</span>
-                    <span>Assignee by shuvo</span>
+                    <span>Assignee- ${element.assignee}</span>
                     <span>•</span>
-                    <span>starting date</span>
+                    <span>Created- ${element.createdAt}</span>
                     <span>•</span>
-                    <span>ending date</span>
+                    <span>Updated- ${element.updatedAt}</span>
                 </div>
 
                 <div class="badge-container flex flex-col gap-1 mt-3">
-                    <div
-                        class="h-6 px-2 py-1.5 bg-[#FEECEC] flex items-center border border-[#FECACA] rounded-[100px] text-[12px] text-[#EF4444] font-medium">
-                        <i class="fa-solid fa-bug"></i>
-                        <p>BUG</p>
-                    </div>
-                    <div
-                        class="h-6 px-2 py-1.5 bg-[#FFF8DB] flex items-center border border-[#FDE68A] rounded-[100px] text-[12px] text-[#D97706] font-medium">
-                        <i class="fa-solid fa-life-ring"></i>
-                        <p>HELP WANTED</p>
-                    </div>
+                    ${labels(element)}
                 </div>
-                <p class="text-[12px] font-normal text-[#64748B]">The navigation menu doesn't collapse properly on
-                    mobile devices...</p>
+                <p class="text-[12px] font-normal text-[#64748B]">${element.description}</p>
 
-                <div
-                    class="bg-slate-50 rounded-xl p-5 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="bg-slate-50 rounded-xl p-5 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div class="flex flex-col gap-1">
                         <span class="text-sm text-slate-500">Assignee:</span>
-                        <span class="font-bold text-gray-900">Fahim Ahmed</span>
+                        <span class="font-bold text-gray-900">${element.assignee}</span>
                     </div>
 
                     <div class="flex flex-col gap-1 sm:w-1/2">
                         <span class="text-sm text-slate-500">Priority:</span>
                         <div>
-                            <div
-                                class="h-6 w-20 px-[25px] py-1.5 text-[12px] font-medium rounded-[100px] text-[#EF4444] bg-[#FEECEC] flex items-center">
-                                <p>HIGH</p>
-                            </div>
+                            ${priority(element)}
                         </div>
                     </div>
                 </div>
@@ -76,9 +87,11 @@ function handleCardClick(container) {
                         <button class="btn">Close</button>
                     </form>
                 </div>
-            `
+            `;
+            
             myModal.appendChild(div);
-        }
+            myModal.showModal(); 
+        });
     });
 }
 
@@ -283,7 +296,8 @@ const displayAllIssue = (arr) => {
     arr.forEach(
         (element) => {
             const card = document.createElement('div');
-            card.className = `grid grid-rows-3 card w-64 p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left cardNo-${element.id}`
+            card.dataset.id = element.id;
+            card.className = `grid grid-rows-3 card w-64 p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left `
 
             card.innerHTML = `
             <div class="row-span-2">
@@ -328,7 +342,8 @@ const displayOpen = (arr) => {
     arr.forEach(
         (element) => {
             const card = document.createElement('div');
-            card.className = `grid grid-rows-3 card w-64 p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left cardNo-${element.id}`
+            card.dataset.id = element.id;
+            card.className = `grid grid-rows-3 card w-64 p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left`
             if (element.status == 'closed') {
                 card.classList.add('hidden');
             }
@@ -375,7 +390,8 @@ const displayClosed = (arr) => {
     arr.forEach(
         (element) => {
             const card = document.createElement('div');
-            card.className = `grid grid-rows-3 card w-64 p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left cardNo-${element.id}`
+            card.dataset.id = element.id;
+            card.className = `grid grid-rows-3 card w-64 p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left `
             if (element.status == 'open') {
                 card.classList.add('hidden');
             }
@@ -414,7 +430,8 @@ const displaySearch = (arr) => {
     arr.forEach(
         (element) => {
             const card = document.createElement('div');
-            card.className = `grid grid-rows-3 card w-64 p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left cardNo-${element.id}`
+            card.dataset.id = element.id;
+            card.className = `grid grid-rows-3 card w-64 p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left `
 
             card.innerHTML = `
             <div class="row-span-2">

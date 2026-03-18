@@ -1,15 +1,41 @@
-let totalALL=0;
-let totalOpen=0;
-let totalClosed=0;
+let totalALL = 0;
+let totalOpen = 0;
+let totalClosed = 0;
+
+
+const cardsContainer = document.getElementById('cards-container');
+const openContainer = document.getElementById('open-container');
+const closedContainer = document.getElementById('closed-container');
+const count = document.getElementById('count');
+const searchContainer = document.getElementById('search-container');
+const searchBtn = document.getElementById('search-btn');
+const input = document.getElementById('input');
+
+searchBtn.addEventListener('click', () => {
+
+    cardsContainer.classList.add('hidden');
+    openContainer.classList.add('hidden');
+    closedContainer.classList.add('hidden');
+    searchContainer.classList.remove('hidden');
+
+    fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${input.value}`)
+    .then((res) => res.json())
+    .then(
+        (json)=>{
+            displaySearch(json.data);
+        }
+    );
+})
+
 
 const loadAllIssue = () => {
     fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
         .then((res) => res.json())
-        .then((json) => { 
+        .then((json) => {
             displayAllIssue(json.data);
             displayOpen(json.data);
             displayClosed(json.data);
-
+            displaySearch(json.data);
         });
 };
 
@@ -20,10 +46,6 @@ const toggleBtn = [
 ]
 
 
-const cardsContainer = document.getElementById('cards-container');
-const openContainer = document.getElementById('open-container');
-const closedContainer = document.getElementById('closed-container');
-const count = document.getElementById('count');
 
 function toggleStyle(id) {
     toggleBtn.forEach((item) => {
@@ -36,34 +58,37 @@ function toggleStyle(id) {
     const clicked = document.getElementById(id);
     clicked.classList.add('bg-[#4A00FF]', 'text-white');
 
-    if(id == 'all-btn'){
+    if (id == 'all-btn') {
         cardsContainer.classList.remove('hidden');
         openContainer.classList.add('hidden');
         closedContainer.classList.add('hidden');
+        searchContainer.classList.add('hidden');
 
         count.innerText = countIssue(id);
     }
-    if(id == 'open-btn'){
+    if (id == 'open-btn') {
         cardsContainer.classList.add('hidden');
         openContainer.classList.remove('hidden');
         closedContainer.classList.add('hidden');
+        searchContainer.classList.add('hidden');
 
         count.innerText = countIssue(id);
     }
-    if(id == 'closed-btn'){
+    if (id == 'closed-btn') {
         cardsContainer.classList.add('hidden');
         openContainer.classList.add('hidden');
         closedContainer.classList.remove('hidden');
+        searchContainer.classList.add('hidden');
 
         count.innerText = countIssue(id);
     }
 }
 
-function countIssue(id){
-    if(id == 'all-btn'){
+function countIssue(id) {
+    if (id == 'all-btn') {
         return totalALL;
     }
-    else if(id == 'open-btn'){
+    else if (id == 'open-btn') {
         return totalOpen;
     }
     else{
@@ -173,8 +198,9 @@ function labels(element) {
 
 const displayAllIssue = (arr) => {
     cardsContainer.innerHTML = '';
+    totalALL = 0;
     arr.forEach(
-        (arr)=>{
+        (arr) => {
             totalALL++;
         }
     )
@@ -212,11 +238,12 @@ const displayAllIssue = (arr) => {
 }
 
 const displayOpen = (arr) => {
-    
+
     openContainer.innerHTML = '';
+    totalOpen = 0;
     arr.forEach(
-        (arr)=>{
-            if(arr.status == 'open'){
+        (arr) => {
+            if (arr.status == 'open') {
                 totalOpen++;
             }
         }
@@ -258,11 +285,12 @@ const displayOpen = (arr) => {
 }
 
 const displayClosed = (arr) => {
-    
+
     closedContainer.innerHTML = '';
+    totalClosed = 0;
     arr.forEach(
-        (arr)=>{
-            if(arr.status == 'closed'){
+        (arr) => {
+            if (arr.status == 'closed') {
                 totalClosed++;
             }
         }
@@ -302,6 +330,48 @@ const displayClosed = (arr) => {
         }
     )
 }
+
+const displaySearch = (arr) => {
+    searchContainer.innerHTML = '';
+    count.innerText = arr.length;
+    
+    arr.forEach(
+        (element) => {
+            const card = document.createElement('div');
+            card.className = `grid grid-rows-3 card w-64 p-4 shadow-[0_3px_6px_0_rgba(0,0,0,0.08)] border-t-4 ${getBorderColor(element)} text-left`
+            
+            card.innerHTML = `
+            <div class="row-span-2">
+                            <div class="flex justify-between">
+                                <img class="size-6" src="./assets/${statusIcon(element)}" alt="">
+                                ${priority(element)}
+                            </div>
+                            <h2 class="card-title mt-3 text-[14px] font-semibold">${element.title}
+                            </h2>
+                            <p class="text-[12px] font-normal text-[#64748B] mt-2">${element.description}</p>
+                            <div  class="badge-container flex flex-col gap-1 mt-3">
+                                ${labels(element)
+                }
+                            </div>
+                        </div>
+                        <div class="row-span-1">
+                            <hr class="border-gray-300 mt-1.5">
+                            <p class="author mt-4 font-normal text-[#64748B] text-[12px]">${element.id} by ${element.author}</p>
+                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Assignee: ${element.assignee}</p>
+                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Created At: ${element.createdAt}</p>
+                            <p class="date mt-2 font-normal text-[#64748B] text-[12px]">Updated At: ${element.updatedAt}</p>
+                        </div>
+            `;
+
+            searchContainer.appendChild(card);
+        }
+    )
+}
+
+
+
+
+
 
 loadAllIssue();
 

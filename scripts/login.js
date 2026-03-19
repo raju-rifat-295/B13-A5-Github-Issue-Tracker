@@ -8,7 +8,7 @@ loginBtn.addEventListener('click',function(){
     const passValue = password.value;
 
     if(userValue == 'admin' && passValue == 'admin123'){
-        window.location.assign('/home.html');
+        window.location.href = "./home.html";
     }
     else{
         alert('Wrong Credential :(')

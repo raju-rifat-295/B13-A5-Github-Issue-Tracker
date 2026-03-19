@@ -2,7 +2,7 @@ let totalALL = 0;
 let totalOpen = 0;
 let totalClosed = 0;
 
-
+const spinnerContainer = document.getElementById('spinner')
 const cardsContainer = document.getElementById('cards-container');
 const openContainer = document.getElementById('open-container');
 const closedContainer = document.getElementById('closed-container');
@@ -36,6 +36,7 @@ function handleCardClick(container) {
         if (!card) return;
 
         const id = card.dataset.id;
+        manageSpinner(true);
 
         fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`)
             .then((res) => res.json())
@@ -89,6 +90,7 @@ function handleCardClick(container) {
 
                 myModal.appendChild(div);
                 myModal.showModal();
+                manageSpinner(false);
             });
     });
 }
@@ -105,6 +107,8 @@ searchBtn.addEventListener('click', () => {
     closedContainer.classList.add('hidden');
     searchContainer.classList.remove('hidden');
 
+    manageSpinner(true);
+
     fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${input.value}`)
         .then((res) => res.json())
         .then(
@@ -116,6 +120,7 @@ searchBtn.addEventListener('click', () => {
 
 
 const loadAllIssue = () => {
+    manageSpinner(true);
     fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
         .then((res) => res.json())
         .then((json) => {
@@ -269,6 +274,17 @@ function labels(element) {
     return badgeS;
 }
 
+
+const manageSpinner=(state)=>{
+    if(state == true){
+        spinnerContainer.classList.remove('hidden');
+    }
+    else{
+        spinnerContainer.classList.add('hidden');
+    }
+}
+
+
 const displayAllIssue = (arr) => {
     cardsContainer.innerHTML = '';
     totalALL = 0;
@@ -306,8 +322,10 @@ const displayAllIssue = (arr) => {
             `;
 
             cardsContainer.appendChild(card);
+            
         }
     )
+    manageSpinner(false);
 }
 
 const displayOpen = (arr) => {
@@ -353,8 +371,10 @@ const displayOpen = (arr) => {
             `;
 
             openContainer.appendChild(card);
+            
         }
     )
+    manageSpinner(false);
 }
 
 const displayClosed = (arr) => {
@@ -400,8 +420,10 @@ const displayClosed = (arr) => {
             `;
 
             closedContainer.appendChild(card);
+        
         }
     )
+    manageSpinner(false);
 }
 
 const displaySearch = (arr) => {
@@ -437,8 +459,10 @@ const displaySearch = (arr) => {
             `;
 
             searchContainer.appendChild(card);
+            
         }
     )
+    manageSpinner(false);
 }
 
 loadAllIssue();
